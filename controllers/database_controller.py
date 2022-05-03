@@ -1,5 +1,5 @@
 import sqlite3
-import models.database_queries as queries
+import models.startup_database_queries as queries
 
 
 class DatabaseController:
@@ -27,6 +27,7 @@ class DatabaseController:
         try:
             self.cursor.execute(query)
             self.connection.commit()
+            print("Query executed successfully.")
         except sqlite3.Error as e:
             print(f"Error occurred while executing query: {e}")
 
