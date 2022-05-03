@@ -1,9 +1,10 @@
-import sys
 from textwrap import dedent
+from models.car_functions import add_car, edit_car, remove_car
+from controllers.user_input import string_input, integer_input
 
 
 # The main screen for the application
-def main_menu():
+def main_menu(db_controller):
     print("Welcome to the Car-rental system!")
     exit_application = False
 
@@ -22,11 +23,7 @@ def main_menu():
         )
 
         # Makes sure that user inputs a number
-        try:
-            user_choice = int(input("Enter your choice: "))
-        except ValueError:
-            print("Please enter a number.")
-            continue
+        user_choice = integer_input("Enter your choice: ")
 
         # Makes sure the user enters a valid number
         if user_choice in range(1, 6):
@@ -36,14 +33,13 @@ def main_menu():
             elif user_choice == 1:
                 customer_menu()
             elif user_choice == 2:
-                car_menu()
+                car_menu(db_controller)
             elif user_choice == 3:
                 rental_menu()
             elif user_choice == 4:
                 import_export_menu()
         else:
             print("Your number is not in the menu range.")
-    sys.exit()
 
 
 # Submenu for doing changes to customers
@@ -64,11 +60,7 @@ def customer_menu():
         )
 
         # Makes sure that user inputs a number
-        try:
-            user_choice = int(input("Enter your choice: "))
-        except ValueError:
-            print("Please enter a number.")
-            continue
+        user_choice = integer_input("Enter your choice: ")
 
         # Makes sure the user enters a valid number
         if user_choice in range(1, 5):
@@ -85,7 +77,7 @@ def customer_menu():
 
 
 # Submenu for doing changes to cars
-def car_menu():
+def car_menu(db_controller):
     exit_menu = False
 
     while not exit_menu:
@@ -102,22 +94,18 @@ def car_menu():
         )
 
         # Makes sure that user inputs a number
-        try:
-            user_choice = int(input("Enter your choice: "))
-        except ValueError:
-            print("Please enter a number.")
-            continue
+        user_choice = integer_input("Enter your choice: ")
 
         # Makes sure the user enters a valid number
         if user_choice in range(1, 5):
             if user_choice == 4:
                 exit_menu = True
             elif user_choice == 1:
-                print("Adding car...")
+                add_car(db_controller)
             elif user_choice == 2:
-                print("Editing car...")
+                edit_car(db_controller)
             elif user_choice == 3:
-                print("Removing car...")
+                remove_car(db_controller)
         else:
             print("Your number is not in the menu range.")
 
@@ -139,11 +127,7 @@ def rental_menu():
         )
 
         # Makes sure that user inputs a number
-        try:
-            user_choice = int(input("Enter your choice: "))
-        except ValueError:
-            print("Please enter a number.")
-            continue
+        user_choice = integer_input("Enter your choice: ")
 
         # Makes sure the user enters a valid number
         if user_choice in range(1, 4):
@@ -176,11 +160,7 @@ def import_export_menu():
         )
 
         # Makes sure that user inputs a number
-        try:
-            user_choice = int(input("Enter your choice: "))
-        except ValueError:
-            print("Please enter a number.")
-            continue
+        user_choice = integer_input("Enter your choice: ")
 
         # Makes sure the user enters a valid number
         if user_choice in range(1, 6):
