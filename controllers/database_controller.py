@@ -15,8 +15,8 @@ class DatabaseController:
         # Makes sure the tables are created/exist
         if self.connection is not None:
             try:
-                self.cursor.execute(queries.create_cars_table)
-                self.cursor.execute(queries.create_customers_table)
+                self.cursor.execute(queries.create_car_table)
+                self.cursor.execute(queries.create_customer_table)
                 print("Tables loaded successfully.")
             except sqlite3.Error as e:
                 print(e)
