@@ -6,7 +6,7 @@ create_car_table = """ CREATE TABLE IF NOT EXISTS car (
                         year INTEGER NOT NULL,
                         color TEXT NOT NULL,
                         mileage INTEGER NOT NULL,
-                        availability INTEGER NOT NULL
+                        availability BOOLEAN DEFAULT TRUE NOT NULL
                         );"""
 
 create_customer_table = """ CREATE TABLE IF NOT EXISTS customer (
