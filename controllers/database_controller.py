@@ -23,24 +23,24 @@ class DatabaseController:
         else:
             print("Error! No database connection.")
 
-    def execute_query(self, query):
+    def execute_query(self, query, args):
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query, args)
             self.connection.commit()
             print("Query executed successfully.")
         except sqlite3.Error as e:
             print(f"Error occurred while executing query: {e}")
 
-    def execute_read_query(self, query):
+    def execute_read_query(self, query, args):
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query, args)
             return self.cursor.fetchall()
         except sqlite3.Error as e:
             print(f"Error occurred while executing query: {e}")
 
-    def execute_single_read_query(self, query):
+    def execute_single_read_query(self, query, args):
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query, args)
             return self.cursor.fetchone()
         except sqlite3.Error as e:
             print(f"Error occurred while executing query: {e}")
