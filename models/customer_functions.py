@@ -26,7 +26,7 @@ def edit_customer(db_controller):
     customer_id = integer_input("Enter customer ID: ")
     # First check if it exists
     customer = db_controller.execute_single_read_query(
-        f"SELECT first_name, last_name FROM customer WHERE id = ?", (customer_id,)
+        f"SELECT first_name, last_name FROM customer WHERE customer_id = ?", (customer_id,)
     )
     if customer is None:
         print("There is no customer with that ID")
@@ -40,7 +40,7 @@ def edit_customer(db_controller):
         # Updates database
         db_controller.execute_query(
             f"UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone_number = ?, "
-            f"birth_year = ? WHERE id = ?",
+            f"birth_year = ? WHERE customer_id = ?",
             (first_name, last_name, email, phone, birth_year, customer_id),
         )
 
@@ -49,13 +49,13 @@ def remove_customer(db_controller):
     customer_id = integer_input("Enter customer ID: ")
     # First check if it exists
     customer = db_controller.execute_single_read_query(
-        f"SELECT first_name, last_name FROM customer WHERE id = ?", (customer_id,)
+        f"SELECT first_name, last_name FROM customer WHERE customer_id = ?", (customer_id,)
     )
     if customer is None:
         print("There is no customer with that ID")
     else:
         db_controller.execute_query(
-            f"DELETE FROM customer WHERE id = ?", (customer_id,)
+            f"DELETE FROM customer WHERE customer_id = ?", (customer_id,)
         )
         print(
             f"Customer {customer[0]} {customer[1]} has been removed"
