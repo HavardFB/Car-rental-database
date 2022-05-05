@@ -1,7 +1,7 @@
 from textwrap import dedent
 from models.car_functions import add_car, edit_car, remove_car
 from models.customer_functions import add_customer, edit_customer, remove_customer
-from models.rental_functions import add_rental, edit_rental, remove_rental
+from models.rental_functions import add_rental, return_rental
 from controllers.user_input import integer_input
 
 
@@ -138,7 +138,7 @@ def rental_menu(db_controller):
             elif user_choice == 1:
                 add_rental(db_controller)
             elif user_choice == 2:
-                print("Removing rental...")
+                return_rental(db_controller)
         else:
             print("Your number is not in the menu range.")
 
