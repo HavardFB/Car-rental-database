@@ -17,4 +17,13 @@ def add_rental(db_controller):
         if car is None:
             print("There is no car with that ID.")
         else:
-            pass
+            # Updates rental table
+            db_controller.execute.query(
+                f"INSERT INTO rental (customer_id, car_id) VALUES (?, ?)", (customer_id, car_id)
+            )
+            # Updates availability car table
+            db_controller.execute.query(
+                f"UPDATE car SET available = 0 WHERE car_id = ?", (car_id,)
+            )
+            print(f"{car[0]} {car[1]} {car[2]} has been rented by {customer[0]} {customer[1]}.") # make model plate, first last name
+            
