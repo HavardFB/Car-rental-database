@@ -20,7 +20,7 @@ def integer_input(question):
             print(f"Error: {e}")
             print("Please try again.")
 
-# Needs regex
+
 def plate_input(question):
     while True:
         try:
