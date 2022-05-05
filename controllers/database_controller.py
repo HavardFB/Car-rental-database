@@ -17,9 +17,10 @@ class DatabaseController:
             try:
                 self.cursor.execute(queries.create_car_table)
                 self.cursor.execute(queries.create_customer_table)
+                self.cursor.execute(queries.create_rental_table)
                 print("Tables loaded successfully.")
             except sqlite3.Error as e:
-                print(e)
+                print(f"Error occurred while loading tables: {e}")
         else:
             print("Error! No database connection.")
 
