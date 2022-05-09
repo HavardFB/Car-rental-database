@@ -97,8 +97,7 @@ def list_available_cars(db_controller):
 def list_current_rentals(db_controller):
     # List the current rentals in rental table, list the customer's id and last name and the car's id, model and plate
     rentals = db_controller.execute_read_query(
-        f"SELECT customer_id, first_name, last_name, car_id, make, model, plate FROM customer, car, rental WHERE customer_id = customer_id AND car_id = car_id",
-        ()
+        f"SELECT rental_id, rental_date, customer_id, car_id FROM rental NATURAL JOIN car NATURAL JOIN customer", ()
     )
     if rentals is None:
         print("There are no current rentals.")
