@@ -1,10 +1,10 @@
-from controllers.user_input import integer_input
+from controllers.user_input import integer_input, plate_input
 from models.customer_functions import list_customers
 from models.car_functions import list_available_cars
+from models.date import get_date
 
 
 def add_rental(db_controller):
-    list_customers(db_controller)
     if list_customers(db_controller) == -10:
         return
     else:
@@ -19,7 +19,6 @@ def add_rental(db_controller):
             if customer is None:
                 print("There is no customer with that ID")
             else:
-                list_available_cars(db_controller)
                 if list_available_cars(db_controller) == -10:
                     return
                 else:
@@ -37,9 +36,10 @@ def add_rental(db_controller):
                         elif car[3] == 0:
                             print("That car is not available.")
                         else:
+                            today = get_date()
                             # Updates rental table
                             db_controller.execute_query(
-                                f"INSERT INTO rental (customer_id, car_id) VALUES (?, ?)", (customer_id, car_id)
+                                f"INSERT INTO rental (customer_id, car_id, rental_date) VALUES (?, ?, ?)", (customer_id, car_id, today)
                             )
                             # Updates availability car table
                             db_controller.execute_query(
@@ -51,69 +51,80 @@ def add_rental(db_controller):
 
 def return_rental(db_controller):
     # Calls function to list all rentals and only continue if there are rentals to return
-    if list_current_rentals(db_controller) == -20:
+    if list_current_rentals(db_controller) == -10:
         return
     else:
-        customer_id = integer_input("Enter the ID of the customer returning the car: ")
-        # First check if customer exists
-        customer = db_controller.execute_single_read_query(
-            f"SELECT first_name, last_name FROM customer WHERE customer_id = ?", (customer_id,)
-        )
-        if customer is None:
-            print("There is no customer with that ID")
-        else:
-            # Finds the rented car
-            car = db_controller.execute_single_read_query(
-                f"SELECT make, model, plate FROM car WHERE car_id = (SELECT car_id FROM rental WHERE customer_id = ?)",
-                (customer_id,)
-            )
-            if car is None:
-                print("There is no car associated with that customer.")
+        while True:
+            customer_id = integer_input("Enter the ID of the customer returning the car (leave blank to cancel): ")
+            if customer_id is None:
+                return
             else:
-                print(f"{car[0]} {car[1]} {car[2]} rented by {customer[0]} {customer[1]} will be returned.")
-                print("1. Yes")
-                print("2. No")
-                user_choice = integer_input("Enter your choice: ")
-                if user_choice in range(1, 3):
-                    if user_choice == 2:
-                        return
-                    else:
-                        # Update availability car table
-                        db_controller.execute_query(
-                            f"UPDATE car SET available = 1 WHERE car_id = (SELECT car_id FROM rental WHERE customer_id = ?)",
-                            (customer_id,)
-                        )
-                        # Remove car from rental table
-                        db_controller.execute_query(
-                            f"DELETE FROM rental WHERE customer_id = ?", (customer_id,)
-                        )
+                # First check if customer exists
+                customer = db_controller.execute_single_read_query(
+                    f"SELECT first_name, last_name FROM customer WHERE customer_id = ?", (customer_id,)
+                )
+                if customer is None:
+                    print("There is no customer with that ID")
                 else:
-                    print("Your number is not in the menu range.")
+                    # Finds the rented car(s)
+                    cars = db_controller.execute_read_query(
+                        f"SELECT make, model, plate FROM car WHERE car_id IN (SELECT car_id FROM rental WHERE customer_id = ?)",
+                        (customer_id,)
+                    )
+                    if len(cars) == 0:
+                        print("There is no car associated with that customer.")
+                    else:
+                        print(f"{customer[0]} {customer[1]} has rented the following car(s):")
+                        print(f"Make | Model | Plate")
+                        for car in cars:
+                            print(f"{car[0]} {car[1]} {car[2]}")
+
+                        while True:
+                            plate_num = plate_input("Please enter the plate number of the car to be returned (leave blank to cancel): ")
+                            if plate_num is None:
+                                return
+                            else:
+                                car_id = db_controller.execute_single_read_query(
+                                    f"SELECT car_id FROM car WHERE plate = ?", (plate_num,)
+                                )
+                                if car_id is None:
+                                    print("There is no rented car with that plate number.")
+                                else:
+                                    print(f"Are you sure car with plate {plate_num} is being returned?")
+                                    print("1. Yes")
+                                    print("2. No")
+                                    user_choice = integer_input("Enter your choice: ")
+                                    if user_choice in range(1, 3):
+                                        if user_choice == 2:
+                                            return
+                                        else:
+                                            today = get_date()
+                                            # Update availability car table
+                                            db_controller.execute_query(
+                                                f"UPDATE car SET available = 1 WHERE car_id = (SELECT car_id FROM rental WHERE customer_id = ?)",
+                                                (customer_id,)
+                                            )
+                                            # Sets return date
+                                            db_controller.execute_query(
+                                                f"UPDATE rental SET return_date = ? WHERE customer_id = ? AND car_id = ?",
+                                                (today, customer_id, car_id[0])
+                                            )
+                                            return
+                                    else:
+                                        print("Your number is not in the menu range.")
 
 
-def list_available_cars(db_controller):
-    cars = db_controller.execute_read_query(
-        f"SELECT car_id, make, model, plate FROM car WHERE available = 1", ()
-    )
-    if cars is None:
-        print("There are no available cars.")
-    else:
-        print("Available cars:")
-        for car in cars:
-            print(f"{car[0]} {car[1]} {car[2]} {car[3]}")  # car_id make model plate
 
-
-# Not working properly
 def list_current_rentals(db_controller):
-    # List the current rentals in rental table, list the customer's id and last name and the car's id, model and plate
     rentals = db_controller.execute_read_query(
-        f"SELECT rental_id, rental_date, customer_id, car_id FROM rental NATURAL JOIN car NATURAL JOIN customer", ()
+        f"SELECT customer.customer_id, customer.last_name, car.car_id, car.make, car.model, car.plate FROM customer, car, rental WHERE customer.customer_id = rental.customer_id AND car.car_id = rental.car_id AND rental.return_date IS NULL", ()
     )
-    if rentals is None:
-        print("There are no current rentals.")
-        return -20
+    if len(rentals) == 0:
+        print("There are no rentals.")
+        return -10
     else:
-        print("Current rentals:")
+        print("CURRENT RENTALS: ")
+        print("Customer ID | Last Name | Car ID | Make | Model | Plate")
         for rental in rentals:
-            print(f"ID: {rental[0]} {rental[1]} {rental[2]} has car ID: {rental[3]} {rental[4]} {rental[5]}")
-            # customer_id first_name last_name car_id model plate
+            print(f"{rental[0]} {rental[1]} {rental[2]} {rental[3]} {rental[4]} {rental[5]}")
+        return
