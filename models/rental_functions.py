@@ -1,42 +1,52 @@
 from controllers.user_input import integer_input
+from models.customer_functions import list_customers
+from models.car_functions import list_available_cars
 
 
 def add_rental(db_controller):
-    customer_id = integer_input("Enter the customer's ID: ")
-    # First check if customer exists
-    customer = db_controller.execute_single_read_query(
-        f"SELECT first_name, last_name FROM customer WHERE customer_id = ?", (customer_id,)
-    )
-    if customer is None:
-        print("There is no customer with that ID")
+    list_customers(db_controller)
+    if list_customers(db_controller) == -10:
+        return
     else:
-        # Checks if customer already has a car
-        car = db_controller.execute_single_read_query(
-            f"SELECT car_id FROM rental WHERE customer_id = ?", (customer_id,)
-        )
-        if car is None:
-            list_available_cars(db_controller)
-            car_id = integer_input("Enter the car's ID: ")
-            # Then check if car exists
-            car = db_controller.execute_single_read_query(
-                f"SELECT make, model, plate, available FROM car WHERE car_id = ?", (car_id,)
+        while True:
+            customer_id = integer_input("Enter the customer's ID (leave blank to cancel): ")
+            if customer_id is None:
+                return
+            # First check if customer exists
+            customer = db_controller.execute_single_read_query(
+                f"SELECT first_name, last_name FROM customer WHERE customer_id = ?", (customer_id,)
             )
-            if car is None:
-                print("There is no car with that ID.")
-            elif car[3] == 0:
-                print("That car is not available.")
+            if customer is None:
+                print("There is no customer with that ID")
             else:
-                # Updates rental table
-                db_controller.execute_query(
-                    f"INSERT INTO rental (customer_id, car_id) VALUES (?, ?)", (customer_id, car_id)
-                )
-                # Updates availability car table
-                db_controller.execute_query(
-                    f"UPDATE car SET available = 0 WHERE car_id = ?", (car_id,)
-                )
-                print(f"{car[0]} {car[1]} {car[2]} has been rented by {customer[0]} {customer[1]}.") # make model plate, first last name
-        else:
-            print("That customer already has a car.")
+                list_available_cars(db_controller)
+                if list_available_cars(db_controller) == -10:
+                    return
+                else:
+                    while True:
+                        car_id = integer_input("Enter the car's ID (leave blank to cancel): ")
+                        if car_id is None:
+                            return
+
+                        # Then checks if car exists and is available
+                        car = db_controller.execute_single_read_query(
+                            f"SELECT make, model, plate, available FROM car WHERE car_id = ?", (car_id,)
+                        )
+                        if car is None:
+                            print("There is no car with that ID.")
+                        elif car[3] == 0:
+                            print("That car is not available.")
+                        else:
+                            # Updates rental table
+                            db_controller.execute_query(
+                                f"INSERT INTO rental (customer_id, car_id) VALUES (?, ?)", (customer_id, car_id)
+                            )
+                            # Updates availability car table
+                            db_controller.execute_query(
+                                f"UPDATE car SET available = 0 WHERE car_id = ?", (car_id,)
+                            )
+                            print(f"{car[0]} {car[1]} {car[2]} has been rented by {customer[0]} {customer[1]}.") # make model plate, first last name
+                            return
 
 
 def return_rental(db_controller):
