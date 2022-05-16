@@ -20,10 +20,10 @@ create_customer_table = """ CREATE TABLE IF NOT EXISTS customer (
 
 create_rental_table = """ CREATE TABLE IF NOT EXISTS rental (
                         rental_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        rental_date DATE,
-                        return_date DATE,
-                        customer_id INTEGER,
-                        car_id INTEGER,
+                        rental_date DATE DEFAULT NULL,
+                        return_date DATE DEFAULT NULL,
+                        customer_id INTEGER DEFAULT NULL,
+                        car_id INTEGER DEFAULT NULL,
                         FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
                         FOREIGN KEY (car_id) REFERENCES car(car_id)
                         );"""
