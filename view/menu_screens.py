@@ -122,7 +122,7 @@ def rental_menu(db_controller):
                 """
         What do you want to do with rentals?
         1. Assign a car to a customer
-        2. Remove a car from a customer
+        2. Return a rented car
         3. Return to main menu
         """
             )
