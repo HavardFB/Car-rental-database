@@ -98,8 +98,11 @@ def list_customers(db_controller):
     customers = db_controller.execute_read_query(
         "SELECT customer_id, first_name, last_name FROM customer", ()
     )
-
-    print("Customers:")
-    print("ID | Name")
-    for customer in customers:
-        print(f"{customer[0]}: {customer[1]} {customer[2]}")
+    if customers:
+        print("Customers:")
+        print("ID | Name")
+        for customer in customers:
+            print(f"{customer[0]}: {customer[1]} {customer[2]}")
+    else:
+        print("There are no customers")
+        return -10
