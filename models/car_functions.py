@@ -2,8 +2,6 @@ from controllers.user_input import string_input
 from controllers.user_input import integer_input
 from controllers.user_input import plate_input
 
-import sys
-
 
 def add_car(db_controller):
     make = string_input("Enter the make of the car (leave blank to cancel): ")
