@@ -22,8 +22,11 @@ create_rental_table = """ CREATE TABLE IF NOT EXISTS rental (
                         rental_id INTEGER PRIMARY KEY AUTOINCREMENT,
                         rental_date DATE DEFAULT NULL,
                         return_date DATE DEFAULT NULL,
+                        customer_last_name TEXT DEFAULT NULL,
+                        customer_phone_number TEXT DEFAULT NULL,
                         customer_id INTEGER DEFAULT NULL,
                         car_id INTEGER DEFAULT NULL,
+                        car_plate TEXT DEFAULT NULL,
                         FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
                         FOREIGN KEY (car_id) REFERENCES car(car_id)
                         );"""
