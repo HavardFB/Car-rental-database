@@ -37,33 +37,14 @@ def plate_input(question):
         try:
             user_input = str(input(question))
             if re.match(
-                r"^[A-Z]{2}[0-9]{5}$", user_input
+                r"^[A-Z]{2}[ ]{1}[0-9]{5}$", user_input
             ):  # Check if the format is correct
                 return user_input
             # Blank input cancels the query
             elif re.match(r"^[ \n\r]{0,8}$", user_input): # Allow for multiple spaces in case of accidental space input
                 return None
             else:
-                print("Please use the format: AB12345")
-        except ValueError as e:
-            print(f"Error: {e}")
-            print("Please try again.")
-
-
-# For user input of names
-def name_input(question):
-    while True:
-        try:
-            user_input = str(input(question))
-            if re.match(
-                r"^[A-ZÆØÅ]{1}[a-zæøå]{1,30}$", user_input
-            ):  # Check if the format is correct
-                return user_input
-            # Blank input cancels the query
-            elif re.match(r"^[ \n\r]{0,8}$", user_input): # Allow for multiple spaces in case of accidental space input
-                return None
-            else:
-                print("Please use the format: Aa")
+                print("Please use the format: AB 12345")
         except ValueError as e:
             print(f"Error: {e}")
             print("Please try again.")
@@ -82,7 +63,7 @@ def phone_input(question):
             elif re.match(r"^[ \n\r]{0,8}$", user_input): # Allow for multiple spaces in case of accidental space input
                 return None
             elif not re.match(r"^(00|\+)", user_input):
-                print("Please remember to add the country code.")
+                print("Please remember to add the country code (with '00' or '+')")
             else:
                 print(
                     "Please try to use a common format. E.g. +4512345678, 0047 418 84 284, +47 (418 00 287)"
