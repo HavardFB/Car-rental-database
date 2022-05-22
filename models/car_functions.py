@@ -30,6 +30,8 @@ def add_car(db_controller):
     )
 
 
+# Normally cars shouldn't be edited, but this function allows for editing all the fields of the car in case it gets
+# a new paint job, a new plate or something was wrong with the initial input when adding the car.
 def edit_car(db_controller):
     list_cars(db_controller)
     while True:
@@ -63,10 +65,15 @@ def edit_car(db_controller):
                 if mileage is None:
                     return
 
+                # Updates the car table
                 db_controller.execute_query(
                     f"UPDATE car SET make = ?, model = ?, plate = ?, "
                     f"year = ?, color = ?, mileage = ? WHERE car_id = ?",
                     (make, model, plate, year, color, mileage, car_id),
+                )
+                # Updates the rental table with new car_plate
+                db_controller.execute_query(
+                    f"UPDATE rental SET car_plate = ? WHERE car_id = ?", (plate, car_id)
                 )
                 return
 
@@ -84,18 +91,31 @@ def remove_car(db_controller):
             )
             if car is None:
                 print("There is no car with that ID.")
+                return
+            # Checks if the car is rented
+            elif db_controller.execute_single_read_query(
+                f"SELECT car_id FROM car WHERE car_id = ? AND available = 1", (car_id,)
+            ) is None:
+                print("The car is currently rented. It has to be returned before it can be removed.")
+                return
             else:
+                # Deletes the car from the car table
                 db_controller.execute_query(f"DELETE FROM car WHERE car_id = ?", (car_id,))
                 print(
                     f"Deleted {car[3]} model {car[0]} {car[1]}, {car[2]}."
                 )  # year, make, model, plate
+                # Deletes the history from the rental table to keep the database clean.
+                db_controller.execute_query(
+                    f"DELETE FROM rental WHERE car_id = ?", (car_id,)
+                )
+                return
 
 
 def list_cars(db_controller):
     cars = db_controller.execute_read_query(
         f"SELECT car_id, make, model, plate FROM car", ()
     )
-
+    print("Owned cars:")
     print("ID\t| Make | Model | Plate")
     for car in cars:
         print(f"{car[0]}\t{car[1]} {car[2]} {car[3]}")
