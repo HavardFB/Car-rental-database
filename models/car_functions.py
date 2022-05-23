@@ -35,7 +35,9 @@ def add_car(db_controller):
 def edit_car(db_controller):
     list_cars(db_controller)
     while True:
-        car_id = integer_input("Enter the ID of the car you want to edit (leave blank to cancel): ")
+        car_id = integer_input(
+            "Enter the ID of the car you want to edit (leave blank to cancel): "
+        )
         if car_id is None:
             return
         else:
@@ -46,22 +48,34 @@ def edit_car(db_controller):
             if car is None:
                 print("There is no car with that ID.")
             else:
-                make = string_input("Enter the new make of the car (leave blank to cancel): ")
+                make = string_input(
+                    "Enter the new make of the car (leave blank to cancel): "
+                )
                 if make is None:
                     return
-                model = string_input("Enter the new model of the car (leave blank to cancel): ")
+                model = string_input(
+                    "Enter the new model of the car (leave blank to cancel): "
+                )
                 if model is None:
                     return
-                plate = plate_input("Enter the new plate of the car (leave blank to cancel): ")
+                plate = plate_input(
+                    "Enter the new plate of the car (leave blank to cancel): "
+                )
                 if plate is None:
                     return
-                year = integer_input("Enter the new year of the car (leave blank to cancel): ")
+                year = integer_input(
+                    "Enter the new year of the car (leave blank to cancel): "
+                )
                 if year is None:
                     return
-                color = string_input("Enter the new color of the car (leave blank to cancel): ")
+                color = string_input(
+                    "Enter the new color of the car (leave blank to cancel): "
+                )
                 if color is None:
                     return
-                mileage = integer_input("Enter the new mileage of the car (leave blank to cancel): ")
+                mileage = integer_input(
+                    "Enter the new mileage of the car (leave blank to cancel): "
+                )
                 if mileage is None:
                     return
 
@@ -81,7 +95,9 @@ def edit_car(db_controller):
 def remove_car(db_controller):
     list_cars(db_controller)
     while True:
-        car_id = integer_input("Enter the ID of the car you want to remove (leave blank to cancel): ")
+        car_id = integer_input(
+            "Enter the ID of the car you want to remove (leave blank to cancel): "
+        )
         if car_id is None:
             return
         else:
@@ -93,14 +109,22 @@ def remove_car(db_controller):
                 print("There is no car with that ID.")
                 return
             # Checks if the car is rented
-            elif db_controller.execute_single_read_query(
-                f"SELECT car_id FROM car WHERE car_id = ? AND available = 1", (car_id,)
-            ) is None:
-                print("The car is currently rented. It has to be returned before it can be removed.")
+            elif (
+                db_controller.execute_single_read_query(
+                    f"SELECT car_id FROM car WHERE car_id = ? AND available = 1",
+                    (car_id,),
+                )
+                is None
+            ):
+                print(
+                    "The car is currently rented. It has to be returned before it can be removed."
+                )
                 return
             else:
                 # Deletes the car from the car table
-                db_controller.execute_query(f"DELETE FROM car WHERE car_id = ?", (car_id,))
+                db_controller.execute_query(
+                    f"DELETE FROM car WHERE car_id = ?", (car_id,)
+                )
                 print(
                     f"Deleted {car[3]} model {car[0]} {car[1]}, {car[2]}."
                 )  # year, make, model, plate
