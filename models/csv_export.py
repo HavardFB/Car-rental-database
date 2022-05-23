@@ -15,10 +15,10 @@ def csv_export_customers(db_controller, file_name):
     else:
         # Opens the file and reads the columns into a customers list
         with open(file_path, "w+") as file:
-            file.write("id,first_name,last_name,email,phone_number,birth_year\n")
-            customers = db_controller.execute_read_query("SELECT customer_id, first_name, last_name, email, phone_number, birth_year FROM customer", ())
+            file.write("first_name,last_name,email,phone_number,birth_year\n")
+            customers = db_controller.execute_read_query("SELECT first_name, last_name, email, phone_number, birth_year FROM customer", ())
             for customer in customers:
-                file.write(str(customer[0]) + "," + customer[1] + "," + customer[2] + "," + customer[3] + "," + customer[4] + "," + str(customer[5]) + "\n")
+                file.write(customer[0] + "," + customer[1] + "," + customer[2] + "," + customer[3] + "," + str(customer[4]) + "\n")
 
 
 def csv_export_cars(db_controller, file_name):
