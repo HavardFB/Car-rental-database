@@ -239,8 +239,7 @@ def export_menu(db_controller):
                     What do you want to export?
                     1. Customers
                     2. Cars
-                    3. Export ALL
-                    4. Go back.
+                    3. Go back.
                     ---------------------------------------------------
                     """
                         )
@@ -250,10 +249,10 @@ def export_menu(db_controller):
                     user_choice = integer_input("Enter your choice: ")
 
                     # Makes sure the user enters a valid number
-                    if user_choice in range(1, 5):
-                        if user_choice == 4:
+                    if user_choice in range(1, 4):
+                        if user_choice == 3:
                             exit_submenu = True
-                        elif user_choice == 1:
+                        elif user_choice == 1:  # CUSTOMER EXPORT
                             file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
                             # Returns -11 if file already exists, the user will have to try again
                             if (csv_export_customers(db_controller, file_name)) == -11:
@@ -261,7 +260,7 @@ def export_menu(db_controller):
                             else:
                                 print("The file has been exported to the exports folder.")
                                 return
-                        elif user_choice == 2:
+                        elif user_choice == 2:  # CAR EXPORT
                             file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
                             if (csv_export_cars(db_controller, file_name)) == -11:
                                 continue
