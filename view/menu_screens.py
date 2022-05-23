@@ -3,6 +3,7 @@ from models.car_functions import add_car, edit_car, remove_car, search_car
 from models.customer_functions import add_customer, edit_customer, remove_customer, search_customer
 from models.rental_functions import add_rental, return_rental
 from controllers.user_input import integer_input, string_input
+from models.csv_export import csv_export_customers, csv_export_cars, csv_export_all
 
 
 # The main screen for the application
@@ -182,17 +183,22 @@ def import_export_menu():
         else:
             print("Your number is not in the menu range.")
 
-def search_menu(db_controller):
+
+# Submenu for exporting data
+def export_menu(db_controller):
     exit_menu = False
 
     while not exit_menu:
         print(
             dedent(
                 """
-        What do you want to search for?
-        1. Customers
-        2. Cars
+        EXPORT MENU
+        ---------------------------------------------------
+        Please select the format you wish to export to:
+        1. CSV
+        2. JSON
         3. Go back.
+        ---------------------------------------------------
         """
             )
         )
@@ -204,13 +210,51 @@ def search_menu(db_controller):
         if user_choice in range(1, 4):
             if user_choice == 3:
                 exit_menu = True
+
+            # Submenu for exporting data to CSV
             elif user_choice == 1:
-                print("Searching for customers...")
-                search_query = string_input("Please type your search query here: ")
-                search_customer(db_controller, search_query)
+                print("Exporting to CSV...")
+                exit_submenu = False
+                while not exit_submenu:
+                    print(
+                        dedent(
+                            """
+                    EXPORT TO CSV
+                    ---------------------------------------------------
+                    What do you want to export?
+                    1. Customers
+                    2. Cars
+                    3. Export ALL
+                    4. Go back.
+                    ---------------------------------------------------
+                    """
+                        )
+                    )
+
+                    # Makes sure that user inputs a number
+                    user_choice = integer_input("Enter your choice: ")
+
+                    # Makes sure the user enters a valid number
+                    if user_choice in range(1, 5):
+                        if user_choice == 4:
+                            exit_submenu = True
+                        elif user_choice == 1:
+                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
+                            csv_export_customers(db_controller, file_name)
+                            return
+                        elif user_choice == 2:
+                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
+                            csv_export_cars(db_controller, file_name)
+                            return
+                        elif user_choice == 3:
+                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
+                            csv_export_all(db_controller, file_name)
+                            return
+                    else:
+                        print("Your number is not in the menu range.")
+
+            # Submenu for exporting data to JSON
             elif user_choice == 2:
-                print("Searching for cars...")
-                search_query = string_input("Please type your search query here: ")
-                search_car(db_controller, search_query)
+                print("Exporting to JSON...")
         else:
             print("Your number is not in the menu range.")
