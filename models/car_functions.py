@@ -133,3 +133,31 @@ def list_available_cars(db_controller):
     else:
         print("There are no available cars.")
         return -10
+
+
+# This is not a very efficient way to search (everything is partial search), but considering this program is for
+# a small car rental company it is highly unlikely the database will get extremely large. Therefore the user is
+# prioritized and the program will allow partial searches for more results.
+def search_car(db_controller, search_query):
+    cars = db_controller.execute_read_query(
+        f"SELECT car_id, make, model, plate, year, color, mileage, available FROM car "
+        f"WHERE make LIKE ('%' || ? || '%') OR model LIKE ('%' || ? || '%') OR plate LIKE ('%' || ? || '%') OR "
+        f"color LIKE ('%' || ? || '%') OR year LIKE ('%' || ? || '%') OR mileage LIKE ('%' || ? || '%')",
+        (search_query, search_query, search_query, search_query, search_query, search_query)
+    )
+    if len(cars) == 0:
+        print("Match not found.")
+        return
+    else:
+        print("Match found:")
+        print("ID | Make Model | Plate | Year | Color | Mileage | Available")
+        available = ""
+        for car in cars:
+            if car[7] == 1:
+                available = "Yes"
+            elif car[7] == 0:
+                available = "No"
+            print(
+                f"{car[0]}: {car[1]} {car[2]} | {car[3]} | {car[4]} | {car[5]} | {car[6]} | {available}"
+            )
+        return
