@@ -39,7 +39,8 @@ def edit_customer(db_controller):
             return
         # First check if it exists
         customer = db_controller.execute_single_read_query(
-            f"SELECT first_name, last_name FROM customer WHERE customer_id = ?", (customer_id,)
+            f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
+            (customer_id,),
         )
 
         if customer is None:
@@ -84,7 +85,8 @@ def remove_customer(db_controller):
         else:
             # First checks if he/she exists
             customer = db_controller.execute_single_read_query(
-                f"SELECT first_name, last_name FROM customer WHERE customer_id = ?", (customer_id,)
+                f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
+                (customer_id,),
             )
             if customer is None:
                 print("There is no customer with that ID")
