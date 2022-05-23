@@ -255,8 +255,12 @@ def export_menu(db_controller):
                             exit_submenu = True
                         elif user_choice == 1:
                             file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            csv_export_customers(db_controller, file_name)
-                            return
+                            # Returns -11 if file already exists, the user will have to try again
+                            if (csv_export_customers(db_controller, file_name)) == -11:
+                                continue
+                            else:
+                                print("The file has been exported to the exports folder.")
+                                return
                         elif user_choice == 2:
                             file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
                             csv_export_cars(db_controller, file_name)
