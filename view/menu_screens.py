@@ -263,12 +263,11 @@ def export_menu(db_controller):
                                 return
                         elif user_choice == 2:
                             file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            csv_export_cars(db_controller, file_name)
-                            return
-                        elif user_choice == 3:
-                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            csv_export_all(db_controller, file_name)
-                            return
+                            if (csv_export_cars(db_controller, file_name)) == -11:
+                                continue
+                            else:
+                                print("The file has been exported to the exports folder.")
+                                return
                     else:
                         print("Your number is not in the menu range.")
 
