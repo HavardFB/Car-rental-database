@@ -125,3 +125,26 @@ def list_customers(db_controller):
     else:
         print("There are no customers")
         return -10
+
+
+# This is not a very efficient way to search (everything is partial search), but considering this program is for
+# a small car rental company it is highly unlikely the database will get extremely large. Therefore the user is
+# prioritized and the program will allow partial searches for more results.
+def search_customer(db_controller, search_query):
+    customers = db_controller.execute_read_query(
+        "SELECT customer_id, first_name, last_name, email, phone_number, birth_year FROM customer "
+        "WHERE first_name LIKE ('%' || ? || '%') OR last_name LIKE ('%' || ? || '%') OR email LIKE ('%' || ? || '%') "
+        "OR phone_number LIKE ('%' || ? || '%') OR birth_year LIKE ('%' || ? || '%')",
+        (search_query, search_query, search_query, search_query, search_query)
+    )
+    if len(customers) == 0:
+        print("Match not found")
+        return
+    else:
+        print("Match found: ")
+        print("ID | Name | E-mail | Phone number | Birth year")
+        for customer in customers:
+            print(
+                f"{customer[0]}: {customer[1]} {customer[2]} | {customer[3]} | {customer[4]} | {customer[5]}"
+            )
+        return
