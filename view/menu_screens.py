@@ -3,7 +3,7 @@ from models.car_functions import add_car, edit_car, remove_car, search_car
 from models.customer_functions import add_customer, edit_customer, remove_customer, search_customer
 from models.rental_functions import add_rental, return_rental
 from controllers.user_input import integer_input, string_input
-from models.csv_export import csv_export_customers, csv_export_cars, csv_export_all
+from models.csv_export import csv_export_customers, csv_export_cars
 
 
 # The main screen for the application
