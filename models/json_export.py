@@ -51,3 +51,28 @@ def json_export_cars(db_controller, file_name):
             # Writes the dictionary to the file
             json_object = json.dumps(cars, indent=4, ensure_ascii=False)
             file.write(json_object)
+
+
+def json_export_rental_history(db_controller, file_name):
+    if file_name is None:
+        file_name = "rental_history-" + str(get_date()) + ".json"
+    else:
+        file_name = file_name + ".json"
+
+    file_path = "exports/" + file_name
+
+    if exists(file_path):
+        print("ERROR: File with that name already exists!")
+        return -11
+    else:
+        with open(file_path, "w+", encoding="UTF8") as file:
+            # List to contain the rental history
+            rental_history = []
+
+            # Appends all rental history to the list
+            for rental in db_controller.execute_read_query("SELECT rental_date, return_date, customer_last_name, customer_phone_number, car_plate FROM rental WHERE return_date IS NOT NULL", ()):
+                rental_history.append({"rental_date": rental[0], "return_date": rental[1], "customer_last_name": rental[2], "customer_phone_number": rental[3], "car_plate": rental[4]})
+
+            # Writes the dictionary to the file
+            json_object = json.dumps(rental_history, indent=4, ensure_ascii=False)
+            file.write(json_object)
