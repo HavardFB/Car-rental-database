@@ -106,6 +106,9 @@ def return_rental(db_controller):
                                             # Updates the new mileage
                                             print("The cars old milage is: ", car[1])
                                             mileage = integer_input("Please enter the new mileage: ")
+                                            while mileage <= car[1]:
+                                                print("You cannot enter a mileage that is less than the old mileage.")
+                                                mileage = integer_input("Please enter the new mileage: ")
 
                                             today = get_date()
 
