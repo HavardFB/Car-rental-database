@@ -23,8 +23,7 @@ def csv_export_customers(db_controller, file_name):
             writer = csv.writer(file)
             writer.writerow(header)
             # Selects the relevant columns from the table
-            customers = db_controller.execute_read_query("SELECT first_name, last_name, email, phone_number, birth_year FROM customer", ())
-            for customer in customers:
+            for customer in db_controller.execute_read_query("SELECT first_name, last_name, email, phone_number, birth_year FROM customer", ()):
                 writer.writerow(customer)
 
 
@@ -49,6 +48,5 @@ def csv_export_cars(db_controller, file_name):
             writer = csv.writer(file)
             writer.writerow(header)
             # Selects the relevant columns from the table
-            cars = db_controller.execute_read_query("SELECT make, model, plate, year, color, mileage FROM car", ())
-            for car in cars:
+            for car in db_controller.execute_read_query("SELECT make, model, plate, year, color, mileage FROM car", ()):
                 writer.writerow(car)
