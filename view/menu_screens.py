@@ -5,6 +5,7 @@ from models.rental_functions import add_rental, return_rental
 from controllers.user_input import integer_input, string_input
 from models.csv_export import csv_export_customers, csv_export_cars, csv_export_rental_history
 from models.json_export import json_export_customers, json_export_cars, json_export_rental_history
+from models.import_data import import_customers, import_cars, import_rental_history
 
 
 # The main screen for the application
@@ -48,7 +49,7 @@ def main_menu(db_controller):
             elif user_choice == 4:
                 search_menu(db_controller)
             elif user_choice == 5:
-                pass
+                import_menu(db_controller)
             elif user_choice == 6:
                 export_menu(db_controller)
         else:
@@ -196,6 +197,42 @@ def search_menu(db_controller):
                 print("Searching for cars...")
                 search_query = string_input("Please type your search query here: ")
                 search_car(db_controller, search_query)
+        else:
+            print("Your number is not in the menu range.")
+
+# Submenu for importing data
+def import_menu(db_controller):
+    exit_menu = False
+
+    while not exit_menu:
+        print(
+            dedent(
+                """
+        IMPORT MENU
+        ---------------------------------------------------
+        What do you want to import?
+        1. Customers
+        2. Cars
+        3. Rental history
+        4. Go back.
+        ---------------------------------------------------
+        """
+            )
+        )
+
+        # Makes sure that user inputs a number
+        user_choice = integer_input("Enter your choice: ")
+
+        # Makes sure the user enters a valid number
+        if user_choice in range(1, 5):
+            if user_choice == 4:
+                exit_menu = True
+            elif user_choice == 1:  # Import customers
+                import_customers(db_controller)
+            elif user_choice == 2:  # Import cars
+                import_cars(db_controller)
+            elif user_choice == 3:  # Import rental history
+                import_rental_history(db_controller)
         else:
             print("Your number is not in the menu range.")
 
