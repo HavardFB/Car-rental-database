@@ -26,10 +26,10 @@ def csv_export_customers(db_controller):
             try:
                 # Opens the file and writes the rows to the file
                 with open(file_path, "w+", encoding="UTF8", newline="") as file:
-                    # Uses the csv writer from CSV module
+                    # Uses the csv writer from CSV module and writes header
                     writer = csv.writer(file)
                     writer.writerow(header)
-                    # Selects the relevant columns from the table
+                    # Selects the relevant columns from the table and writes them to the file
                     for customer in db_controller.execute_read_query("SELECT first_name, last_name, email, phone_number, birth_year FROM customer", ()):
                         writer.writerow(customer)
                 print("Successfully exported to file " + file_name)
@@ -61,10 +61,10 @@ def csv_export_cars(db_controller):
             try:
                 # Opens the file and writes the rows to the file
                 with open(file_path, "w+", encoding="UTF8", newline="") as file:
-                    # Uses the csv writer from CSV module
+                    # Uses the csv writer from CSV module and writes header
                     writer = csv.writer(file)
                     writer.writerow(header)
-                    # Selects the relevant columns from the table
+                    # Selects the relevant columns from the table and writes them to the file
                     for car in db_controller.execute_read_query("SELECT make, model, plate, year, color, mileage FROM car", ()):
                         writer.writerow(car)
                 print("Successfully exported to file " + file_name)
@@ -96,10 +96,10 @@ def csv_export_rental_history(db_controller):
             try:
                 # Opens the file and writes the rows to the file
                 with open(file_path, "w+", encoding="UTF8", newline="") as file:
-                    # Uses the csv writer from CSV module
+                    # Uses the csv writer from CSV module and writes header
                     writer = csv.writer(file)
                     writer.writerow(header)
-                    # Selects the relevant columns from the table
+                    # Selects the relevant columns from the table and writes them to the file
                     for rental in db_controller.execute_read_query("SELECT rental_date, return_date, customer_last_name, customer_phone_number, car_plate FROM rental WHERE return_date IS NOT NULL", ()):
                         writer.writerow(rental)
                 print("Successfully exported to file " + file_name)

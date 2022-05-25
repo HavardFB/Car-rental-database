@@ -23,7 +23,7 @@ def add_car(db_controller):
     if mileage is None:
         return
 
-    # Inserting data this way to ensure fields are inserted as data and not commands
+    # Inserting data into the car table
     db_controller.execute_query(
         f"INSERT INTO car (make, model, plate, year, color, mileage) VALUES (?, ?, ?, ?, ?, ?)",
         (make, model, plate, year, color, mileage),
@@ -33,13 +33,16 @@ def add_car(db_controller):
 # Normally cars shouldn't be edited, but this function allows for editing all the fields of the car in case it gets
 # a new paint job, a new plate or something was wrong with the initial input when adding the car.
 def edit_car(db_controller):
+    # Returns if there are no cars in the database
     if list_cars(db_controller) == -10:
         return
 
+    # Loops to continually ask for inputs until valid input is given
     while True:
         car_id = integer_input(
             "Enter the ID of the car you want to edit (leave blank to cancel): "
         )
+        # Returns on cancel
         if car_id is None:
             return
         else:
@@ -49,6 +52,7 @@ def edit_car(db_controller):
             )
             if car is None:
                 print("There is no car with that ID.")
+                continue
             else:
                 make = string_input(
                     "Enter the new make of the car (leave blank to cancel): "
@@ -87,7 +91,7 @@ def edit_car(db_controller):
                     f"year = ?, color = ?, mileage = ? WHERE car_id = ?",
                     (make, model, plate, year, color, mileage, car_id),
                 )
-                # Updates the rental table with new car_plate
+                # Updates the rental table with the edited value
                 db_controller.execute_query(
                     f"UPDATE rental SET car_plate = ? WHERE car_id = ?", (plate, car_id)
                 )
@@ -95,13 +99,16 @@ def edit_car(db_controller):
 
 
 def remove_car(db_controller):
+    # Returns if there are no cars in the database
     if list_cars(db_controller) == -10:
         return
 
+    # Loops to continually ask for inputs until valid input is given
     while True:
         car_id = integer_input(
             "Enter the ID of the car you want to remove (leave blank to cancel): "
         )
+        # Returns on cancel
         if car_id is None:
             return
         else:
@@ -132,13 +139,15 @@ def remove_car(db_controller):
                 print(
                     f"Deleted {car[3]} model {car[0]} {car[1]}, {car[2]}."
                 )  # year, make, model, plate
-                # Deletes the history from the rental table to keep the database clean.
+                # Deletes the history from the rental table to keep the database clean. (Don't want to keep history of
+                # a non-existent car)
                 db_controller.execute_query(
                     f"DELETE FROM rental WHERE car_id = ?", (car_id,)
                 )
                 return
 
 
+# Lists all the cars in the database
 def list_cars(db_controller):
     cars = db_controller.execute_read_query(
         f"SELECT car_id, make, model, plate, year, color, mileage FROM car", ()
@@ -155,6 +164,7 @@ def list_cars(db_controller):
         return -10
 
 
+# List only the cars that are available for renting
 def list_available_cars(db_controller):
     cars = db_controller.execute_read_query(
         f"SELECT car_id, make, model, plate FROM car WHERE available = 1", ()

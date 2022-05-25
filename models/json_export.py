@@ -5,6 +5,7 @@ from controllers.user_input import string_input
 
 
 def json_export_customers(db_controller):
+    # Loops until valid input is given
     while True:
         file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
 
@@ -44,6 +45,7 @@ def json_export_customers(db_controller):
 
 
 def json_export_cars(db_controller):
+    # Loops until valid input is given
     while True:
         file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
 
@@ -81,6 +83,7 @@ def json_export_cars(db_controller):
 
 
 def json_export_rental_history(db_controller):
+    # Loops until valid input is given
     while True:
         file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
 

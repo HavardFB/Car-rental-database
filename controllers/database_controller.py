@@ -12,7 +12,7 @@ class DatabaseController:
         except sqlite3.Error as e:
             print(e)
 
-        # Makes sure the tables are created/exist
+        # Makes sure the tables are created/exists
         if self.connection is not None:
             try:
                 self.cursor.execute(queries.create_car_table)
@@ -24,6 +24,7 @@ class DatabaseController:
         else:
             print("Error! No database connection.")
 
+    # Executes queries that requires change to the database
     def execute_query(self, query, args):
         try:
             self.cursor.execute(query, args)
@@ -32,6 +33,7 @@ class DatabaseController:
         except sqlite3.Error as e:
             print(f"Error occurred while executing query: {e}")
 
+    # Executes queries that does not require change to the database
     def execute_read_query(self, query, args):
         try:
             self.cursor.execute(query, args)
@@ -39,6 +41,7 @@ class DatabaseController:
         except sqlite3.Error as e:
             print(f"Error occurred while executing query: {e}")
 
+    # Execute a read only query that returns a single value
     def execute_single_read_query(self, query, args):
         try:
             self.cursor.execute(query, args)

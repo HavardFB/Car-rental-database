@@ -1,7 +1,7 @@
 import re
 
 
-# For user input of generic string
+# For user input of a generic string
 def string_input(question):
     while True:
         try:
@@ -31,14 +31,15 @@ def integer_input(question):
             print("Please try again.")
 
 
-# For user input of car plate number
+# For user input of car plate number (NORWEGIAN FORMAT!)
 def plate_input(question):
     while True:
         try:
             user_input = str(input(question))
+            # Check if the format is correct
             if re.match(
-                r"^[A-Z]{2}[ ]{1}[0-9]{5}$", user_input
-            ):  # Check if the format is correct
+                r"^[A-Z]{2}[ ]{1}[1-9]{1}[0-9]{4}$", user_input
+            ):
                 return user_input
             # Blank input cancels the query
             elif re.match(r"^[ \n\r]{0,8}$", user_input): # Allow for multiple spaces in case of accidental space input
@@ -55,10 +56,13 @@ def phone_input(question):
     while True:
         try:
             user_input = str(input(question))
+            # Allows for a wide range of phone numbers and formats (customer may not be Norwegian, therefore it is
+            # required to add country code)
             if re.match(
                 r"^(00|\+)[1-9][0-9 \-\(\)\.]{7,24}$", user_input
-            ):  # Allows for a wide range of phone numbers
+            ):
                 return user_input # Will not format phone number into a standard format due to variations in every country
+
             # Blank input cancels the query
             elif re.match(r"^[ \n\r]{0,8}$", user_input): # Allow for multiple spaces in case of accidental space input
                 return None
@@ -73,7 +77,7 @@ def phone_input(question):
             print("Please try again.")
 
 
-# For user input of years (e.g. 1999, 2015, 1962)
+# For user input of years (e.g. 1999, 2015, 1962), requires four digits
 def year_input(question):
     while True:
         try:

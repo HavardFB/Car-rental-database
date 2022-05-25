@@ -11,9 +11,10 @@ def add_customer(db_controller):
     last_name = string_input("Enter last name (leave blank to cancel): ")
     if last_name is None:
         return
+    # Not using regex for email, too many email conventions to consider
     email = string_input(
         "Enter email (leave blank to cancel): "
-    )  # Not using regex for email, too many email conventions to consider
+    )
     if email is None:
         return
     phone = phone_input("Enter phone number (leave blank to cancel): ")
@@ -23,7 +24,7 @@ def add_customer(db_controller):
     if birth_year is None:
         return
 
-    # Inserting this way to prevent injection
+    # Inserting the data into the customer table
     db_controller.execute_query(
         f"INSERT INTO customer (first_name, last_name, email, phone_number, birth_year) "
         f"VALUES (?, ?, ?, ?, ?)",
@@ -32,14 +33,16 @@ def add_customer(db_controller):
 
 
 def edit_customer(db_controller):
+    # Return if there are no customers
     if list_customers(db_controller) == -10:
         return
 
+    # Loops until a valid input is given
     while True:
         customer_id = integer_input("Enter customer ID (leave blank to cancel): ")
         if customer_id is None:
             return
-        # First check if it exists
+        # First check if customer exists
         customer = db_controller.execute_single_read_query(
             f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
             (customer_id,),
@@ -47,6 +50,7 @@ def edit_customer(db_controller):
 
         if customer is None:
             print("There is no customer with that ID")
+            continue
         else:
             first_name = string_input("Enter new first name (leave blank to cancel): ")
             if first_name is None:
@@ -79,15 +83,17 @@ def edit_customer(db_controller):
 
 
 def remove_customer(db_controller):
+    # Return if there are no customers
     if list_customers(db_controller) == -10:
         return
 
+    # Loops until a valid input is given
     while True:
         customer_id = integer_input("Enter customer ID (leave blank to cancel): ")
         if customer_id is None:
             return
         else:
-            # First checks if he/she exists
+            # First checks if customer exists
             customer = db_controller.execute_single_read_query(
                 f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
                 (customer_id,),
@@ -95,7 +101,7 @@ def remove_customer(db_controller):
             if customer is None:
                 print("There is no customer with that ID")
                 return
-            # Checks if there are no rentals for this customer
+            # Checks if there are no rentals for this customer, returns if there are rentals
             elif db_controller.execute_single_read_query(
                 f"SELECT customer_id FROM rental WHERE customer_id = ?", (customer_id,)
             ):

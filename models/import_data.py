@@ -4,8 +4,11 @@ from controllers.user_input import string_input
 
 
 def import_customers(db_controller):
+    # Loops until user enters a valid input
     while True:
         file_name = string_input("Enter the exact file name with extensions (press enter to cancel): ")
+
+        # Returns on cancel
         if file_name is None:
             return
 
@@ -19,7 +22,7 @@ def import_customers(db_controller):
         )
         # CSV IMPORT
         if file_name.endswith(".csv"):
-            # Try Except to catch file not found error
+            # Try, Except to catch file not found error
             try:
                 # Opens file for reading with CSV module
                 with open(file_path, "r", encoding="UTF8") as csv_file:
@@ -102,6 +105,8 @@ def import_customers(db_controller):
 def import_cars(db_controller):
     while True:
         file_name = string_input("Enter the exact file name with extensions (press enter to cancel): ")
+
+        # Returns on cancel
         if file_name is None:
             return
 
@@ -195,7 +200,6 @@ def import_cars(db_controller):
 
         else:
             print("File type not supported.")
-
 
 # I have chosen not to implement a function to import rental history, because in my opinion history is best
 # saved in exported csv or json files, and not in the database itself.
