@@ -75,9 +75,11 @@ def return_rental(db_controller):
                         print("There is no car associated with that customer.")
                     else:
                         print(f"{customer[0]} {customer[1]} has rented the following car(s):")
+                        print("---------------------------------------------------")
                         print(f"Make | Model | Plate")
                         for car in cars:
                             print(f"{car[0]} {car[1]} {car[2]}")
+                        print("---------------------------------------------------")
 
                         # Loop to keep asking for input until valid input is given (or user cancels)
                         while True:
@@ -137,7 +139,9 @@ def list_current_rentals(db_controller):
         return -10
     else:
         print("CURRENT RENTALS: ")
+        print("---------------------------------------------------")
         print("Customer ID | Last Name | Car ID | Make | Model | Plate")
         for rental in rentals:
             print(f"{rental[0]} | {rental[1]} {rental[2]} {rental[3]} {rental[4]} {rental[5]}")
+        print("---------------------------------------------------")
         return
