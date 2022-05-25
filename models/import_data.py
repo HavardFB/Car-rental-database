@@ -6,7 +6,9 @@ from controllers.user_input import string_input
 def import_customers(db_controller):
     # Loops until user enters a valid input
     while True:
-        file_name = string_input("Enter the exact file name with extensions (press enter to cancel): ")
+        file_name = string_input(
+            "Enter the exact file name with extensions (press enter to cancel): "
+        )
 
         # Returns on cancel
         if file_name is None:
@@ -106,7 +108,9 @@ def import_customers(db_controller):
 
 def import_cars(db_controller):
     while True:
-        file_name = string_input("Enter the exact file name with extensions (press enter to cancel): ")
+        file_name = string_input(
+            "Enter the exact file name with extensions (press enter to cancel): "
+        )
 
         # Returns on cancel
         if file_name is None:
@@ -117,9 +121,7 @@ def import_cars(db_controller):
         # List to contain the cars
         cars = []
         # List of car plates that already exist in the database to check for duplicates
-        db_cars = db_controller.execute_read_query(
-            "SELECT plate FROM car", ()
-        )
+        db_cars = db_controller.execute_read_query("SELECT plate FROM car", ())
         # CSV IMPORT
         if file_name.endswith(".csv"):
             # Try Except to catch file not found error
@@ -202,6 +204,7 @@ def import_cars(db_controller):
 
         else:
             print("File type not supported.")
+
 
 # I have chosen not to implement a function to import rental history, because in my opinion history is best
 # saved in exported csv or json files, and not in the database itself.

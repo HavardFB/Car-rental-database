@@ -200,6 +200,7 @@ def search_menu(db_controller):
         else:
             print("Your number is not in the menu range.")
 
+
 # Submenu for importing data
 def import_menu(db_controller):
     exit_menu = False

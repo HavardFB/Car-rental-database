@@ -130,8 +130,7 @@ def remove_car(db_controller):
             # Checks if the car is rented
             elif (
                 db_controller.execute_single_read_query(
-                    f"SELECT car_id FROM car WHERE car_id = ? AND available = 1",
-                    (car_id)
+                    f"SELECT car_id FROM car WHERE car_id = ? AND available = 1", (car_id)
                 )
                 is None
             ):
@@ -147,6 +146,7 @@ def remove_car(db_controller):
                 print(
                     f"Deleted {car[3]} model {car[0]} {car[1]}, {car[2]}."
                 )  # year, make, model, plate
+
                 # Deletes the history from the rental table to keep the database clean. (Don't want to keep history of
                 # a non-existent car)
                 db_controller.execute_query(
@@ -197,7 +197,14 @@ def search_car(db_controller, search_query):
         f"SELECT car_id, make, model, plate, year, color, mileage, available FROM car "
         f"WHERE make LIKE ('%' || ? || '%') OR model LIKE ('%' || ? || '%') OR plate LIKE ('%' || ? || '%') OR "
         f"color LIKE ('%' || ? || '%') OR year LIKE ('%' || ? || '%') OR mileage LIKE ('%' || ? || '%')",
-        (search_query, search_query, search_query, search_query, search_query, search_query)
+        (
+            search_query,
+            search_query,
+            search_query,
+            search_query,
+            search_query,
+            search_query
+        )
     )
     if len(cars) == 0:
         print("Match not found.")

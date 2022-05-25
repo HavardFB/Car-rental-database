@@ -12,9 +12,7 @@ def add_customer(db_controller):
     if last_name is None:
         return
     # Not using regex for email, too many email conventions to consider
-    email = string_input(
-        "Enter email (leave blank to cancel): "
-    )
+    email = string_input("Enter email (leave blank to cancel): ")
     if email is None:
         return
     phone = phone_input("Enter phone number (leave blank to cancel): ")

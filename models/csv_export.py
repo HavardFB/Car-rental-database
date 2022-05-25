@@ -6,7 +6,9 @@ from controllers.user_input import string_input
 
 def csv_export_customers(db_controller):
     while True:
-        file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
+        file_name = string_input(
+            "Please enter the filename without extensions (or press enter to use default name): "
+        )
 
         # Sets default file name
         if file_name is None:
@@ -30,18 +32,24 @@ def csv_export_customers(db_controller):
                     writer = csv.writer(file)
                     writer.writerow(header)
                     # Selects the relevant columns from the table and writes them to the file
-                    for customer in db_controller.execute_read_query("SELECT first_name, last_name, email, phone_number, birth_year FROM customer", ()):
+                    for customer in db_controller.execute_read_query(
+                        "SELECT first_name, last_name, email, phone_number, birth_year FROM customer",()
+                    ):
                         writer.writerow(customer)
                 print("Successfully exported to file " + file_name)
                 return
             except Exception:
-                print(f"ERROR {Exception}: Something went wrong while writing to the file!")
+                print(
+                    f"ERROR {Exception}: Something went wrong while writing to the file!"
+                )
                 return
 
 
 def csv_export_cars(db_controller):
     while True:
-        file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
+        file_name = string_input(
+            "Please enter the filename without extensions (or press enter to use default name): "
+        )
 
         # Sets default file name
         if file_name is None:
@@ -65,18 +73,24 @@ def csv_export_cars(db_controller):
                     writer = csv.writer(file)
                     writer.writerow(header)
                     # Selects the relevant columns from the table and writes them to the file
-                    for car in db_controller.execute_read_query("SELECT make, model, plate, year, color, mileage FROM car", ()):
+                    for car in db_controller.execute_read_query(
+                        "SELECT make, model, plate, year, color, mileage FROM car", ()
+                    ):
                         writer.writerow(car)
                 print("Successfully exported to file " + file_name)
                 return
             except Exception:
-                print(f"ERROR {Exception}: Something went wrong while writing to the file!")
+                print(
+                    f"ERROR {Exception}: Something went wrong while writing to the file!"
+                )
                 return
 
 
 def csv_export_rental_history(db_controller):
     while True:
-        file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
+        file_name = string_input(
+            "Please enter the filename without extensions (or press enter to use default name): "
+        )
 
         # Sets default file name
         if file_name is None:
@@ -100,10 +114,15 @@ def csv_export_rental_history(db_controller):
                     writer = csv.writer(file)
                     writer.writerow(header)
                     # Selects the relevant columns from the table and writes them to the file
-                    for rental in db_controller.execute_read_query("SELECT rental_date, return_date, customer_last_name, customer_phone_number, car_plate FROM rental WHERE return_date IS NOT NULL", ()):
+                    for rental in db_controller.execute_read_query(
+                        "SELECT rental_date, return_date, customer_last_name, customer_phone_number, car_plate "
+                        "FROM rental WHERE return_date IS NOT NULL", ()
+                    ):
                         writer.writerow(rental)
                 print("Successfully exported to file " + file_name)
                 return
             except Exception:
-                print(f"ERROR {Exception}: Something went wrong while writing to the file!")
+                print(
+                    f"ERROR {Exception}: Something went wrong while writing to the file!"
+                )
                 return
