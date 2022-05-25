@@ -31,32 +31,33 @@ def import_customers(db_controller):
                     for row in csv_reader:
                         customers.append(row)
 
-                    # Finds the duplicates in the phone numbers
-                    for customer in list(customers):
-                        for db_customer in db_customers:
-                            if customer["phone_number"] == db_customer[0]:
-                                customers.remove(customer)
-                                break
+                # Finds the duplicates in the phone numbers.Uses list() to keep the original order of the list
+                # otherwise the indexes would change due to removed duplicates
+                for customer in list(customers):
+                    for db_customer in db_customers:
+                        if customer["phone_number"] == db_customer[0]:
+                            customers.remove(customer)
+                            break
 
-                    if len(customers) == 0:
-                        print("No new customers found.")
-                        return
-
-                    # Inserts the customers into the database
-                    for customer in customers:
-                        db_controller.execute_query(
-                            "INSERT INTO customer (first_name, last_name, email, phone_number, birth_year) "
-                            "VALUES (?, ?, ?, ?, ?)",
-                            (
-                                customer["first_name"],
-                                customer["last_name"],
-                                customer["email"],
-                                customer["phone_number"],
-                                customer["birth_year"],
-                            ),
-                        )
-                    print("Customers imported successfully")
+                if len(customers) == 0:
+                    print("No new customers found.")
                     return
+
+                # Inserts the customers into the database
+                for customer in customers:
+                    db_controller.execute_query(
+                        "INSERT INTO customer (first_name, last_name, email, phone_number, birth_year) "
+                        "VALUES (?, ?, ?, ?, ?)",
+                        (
+                            customer["first_name"],
+                            customer["last_name"],
+                            customer["email"],
+                            customer["phone_number"],
+                            customer["birth_year"],
+                        ),
+                    )
+                print("Customers imported successfully")
+                return
             except FileNotFoundError:
                 print("File not found")
 
@@ -69,32 +70,33 @@ def import_customers(db_controller):
                     # Loads the file into a list
                     customers = json.load(json_file)
 
-                    # Finds the duplicates in the phone numbers
-                    for customer in list(customers):
-                        for db_customer in db_customers:
-                            if customer["phone_number"] == db_customer[0]:
-                                customers.remove(customer)
-                                break
+                # Finds the duplicates in the phone numbers.Uses list() to keep the original order of the list
+                # otherwise the indexes would change due to removed duplicates
+                for customer in list(customers):
+                    for db_customer in db_customers:
+                        if customer["phone_number"] == db_customer[0]:
+                            customers.remove(customer)
+                            break
 
-                    if len(customers) == 0:
-                        print("No new customers found.")
-                        return
-
-                    # Inserts the customers into the database
-                    for customer in customers:
-                        db_controller.execute_query(
-                            "INSERT INTO customer (first_name, last_name, email, phone_number, birth_year) "
-                            "VALUES (?, ?, ?, ?,?)",
-                            (
-                                customer["first_name"],
-                                customer["last_name"],
-                                customer["email"],
-                                customer["phone_number"],
-                                customer["birth_year"],
-                            ),
-                        )
-                    print("Customers imported successfully")
+                if len(customers) == 0:
+                    print("No new customers found.")
                     return
+
+                # Inserts the customers into the database
+                for customer in customers:
+                    db_controller.execute_query(
+                        "INSERT INTO customer (first_name, last_name, email, phone_number, birth_year) "
+                        "VALUES (?, ?, ?, ?,?)",
+                        (
+                            customer["first_name"],
+                            customer["last_name"],
+                            customer["email"],
+                            customer["phone_number"],
+                            customer["birth_year"],
+                        ),
+                    )
+                print("Customers imported successfully")
+                return
             except FileNotFoundError:
                 print("File not found")
 
@@ -129,33 +131,33 @@ def import_cars(db_controller):
                     for row in csv_reader:
                         cars.append(row)
 
-                    # Finds the duplicates in the car plates
-                    for car in list(cars):
-                        for db_car in db_cars:
-                            if car["plate"] == db_car[0]:
-                                cars.remove(car)
-                                break
+                # Finds the duplicates in the car plates. Uses list() to keep the original order of the list
+                for car in list(cars):
+                    for db_car in db_cars:
+                        if car["plate"] == db_car[0]:
+                            cars.remove(car)
+                            break
 
-                    if len(cars) == 0:
-                        print("No new cars to import")
-                        return
-
-                    # Inserts the cars into the database
-                    for car in cars:
-                        db_controller.execute_query(
-                            "INSERT INTO car (make, model, plate, year, color, mileage) "
-                            "VALUES (?, ?, ?, ?, ?, ?)",
-                            (
-                                car["make"],
-                                car["model"],
-                                car["plate"],
-                                car["year"],
-                                car["color"],
-                                car["mileage"]
-                            ),
-                        )
-                    print("Cars imported successfully")
+                if len(cars) == 0:
+                    print("No new cars to import")
                     return
+
+                # Inserts the cars into the database
+                for car in cars:
+                    db_controller.execute_query(
+                        "INSERT INTO car (make, model, plate, year, color, mileage) "
+                        "VALUES (?, ?, ?, ?, ?, ?)",
+                        (
+                            car["make"],
+                            car["model"],
+                            car["plate"],
+                            car["year"],
+                            car["color"],
+                            car["mileage"]
+                        ),
+                    )
+                print("Cars imported successfully")
+                return
             except FileNotFoundError:
                 print("File not found")
 
@@ -168,33 +170,33 @@ def import_cars(db_controller):
                     # Loads the json file into the list
                     cars = json.load(json_file)
 
-                    # Finds the duplicates in the car plates
-                    for car in list(cars):
-                        for db_car in db_cars:
-                            if car["plate"] == db_car[0]:
-                                cars.remove(car)
-                                break
+                # Finds the duplicates in the car plates. Uses list() to keep the original order of the list
+                for car in list(cars):
+                    for db_car in db_cars:
+                        if car["plate"] == db_car[0]:
+                            cars.remove(car)
+                            break
 
-                    if len(cars) == 0:
-                        print("No new cars to import")
-                        return
-
-                    # Inserts the cars into the database
-                    for car in cars:
-                        db_controller.execute_query(
-                            "INSERT INTO car (make, model, plate, year, color, mileage) "
-                            "VALUES (?, ?, ?, ?, ?, ?)",
-                            (
-                                car["make"],
-                                car["model"],
-                                car["plate"],
-                                car["year"],
-                                car["color"],
-                                car["mileage"]
-                            ),
-                        )
-                    print("Cars imported successfully")
+                if len(cars) == 0:
+                    print("No new cars to import")
                     return
+
+                # Inserts the cars into the database
+                for car in cars:
+                    db_controller.execute_query(
+                        "INSERT INTO car (make, model, plate, year, color, mileage) "
+                        "VALUES (?, ?, ?, ?, ?, ?)",
+                        (
+                            car["make"],
+                            car["model"],
+                            car["plate"],
+                            car["year"],
+                            car["color"],
+                            car["mileage"]
+                        ),
+                    )
+                print("Cars imported successfully")
+                return
             except FileNotFoundError:
                 print("File not found")
 
