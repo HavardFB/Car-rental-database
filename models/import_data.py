@@ -53,8 +53,8 @@ def import_customers(db_controller):
                             customer["last_name"],
                             customer["email"],
                             customer["phone_number"],
-                            customer["birth_year"],
-                        ),
+                            customer["birth_year"]
+                        )
                     )
                 print("Customers imported successfully")
                 return
@@ -92,8 +92,8 @@ def import_customers(db_controller):
                             customer["last_name"],
                             customer["email"],
                             customer["phone_number"],
-                            customer["birth_year"],
-                        ),
+                            customer["birth_year"]
+                        )
                     )
                 print("Customers imported successfully")
                 return
@@ -154,7 +154,7 @@ def import_cars(db_controller):
                             car["year"],
                             car["color"],
                             car["mileage"]
-                        ),
+                        )
                     )
                 print("Cars imported successfully")
                 return
@@ -193,7 +193,7 @@ def import_cars(db_controller):
                             car["year"],
                             car["color"],
                             car["mileage"]
-                        ),
+                        )
                     )
                 print("Cars imported successfully")
                 return

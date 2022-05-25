@@ -23,10 +23,18 @@ def add_car(db_controller):
     if mileage is None:
         return
 
+    # Checks if car already exists
+    car = db_controller.execute_single_read_query(
+        f"SELECT car_id FROM car WHERE plate = ?", (plate)
+    )
+    if car:
+        print("A car with that plate already exists.")
+        return
+
     # Inserting data into the car table
     db_controller.execute_query(
         f"INSERT INTO car (make, model, plate, year, color, mileage) VALUES (?, ?, ?, ?, ?, ?)",
-        (make, model, plate, year, color, mileage),
+        (make, model, plate, year, color, mileage)
     )
 
 
@@ -48,7 +56,7 @@ def edit_car(db_controller):
         else:
             # First check if it exists
             car = db_controller.execute_single_read_query(
-                f"SELECT make, model, plate FROM car WHERE car_id = ?", (car_id,)
+                f"SELECT make, model, plate FROM car WHERE car_id = ?", (car_id)
             )
             if car is None:
                 print("There is no car with that ID.")
@@ -89,7 +97,7 @@ def edit_car(db_controller):
                 db_controller.execute_query(
                     f"UPDATE car SET make = ?, model = ?, plate = ?, "
                     f"year = ?, color = ?, mileage = ? WHERE car_id = ?",
-                    (make, model, plate, year, color, mileage, car_id),
+                    (make, model, plate, year, color, mileage, car_id)
                 )
                 # Updates the rental table with the edited value
                 db_controller.execute_query(
@@ -114,7 +122,7 @@ def remove_car(db_controller):
         else:
             # First check if it exists
             car = db_controller.execute_single_read_query(
-                f"SELECT make, model, plate, year FROM car WHERE car_id = ?", (car_id,)
+                f"SELECT make, model, plate, year FROM car WHERE car_id = ?", (car_id)
             )
             if car is None:
                 print("There is no car with that ID.")
@@ -123,7 +131,7 @@ def remove_car(db_controller):
             elif (
                 db_controller.execute_single_read_query(
                     f"SELECT car_id FROM car WHERE car_id = ? AND available = 1",
-                    (car_id,),
+                    (car_id)
                 )
                 is None
             ):
@@ -134,7 +142,7 @@ def remove_car(db_controller):
             else:
                 # Deletes the car from the car table
                 db_controller.execute_query(
-                    f"DELETE FROM car WHERE car_id = ?", (car_id,)
+                    f"DELETE FROM car WHERE car_id = ?", (car_id)
                 )
                 print(
                     f"Deleted {car[3]} model {car[0]} {car[1]}, {car[2]}."
@@ -142,7 +150,7 @@ def remove_car(db_controller):
                 # Deletes the history from the rental table to keep the database clean. (Don't want to keep history of
                 # a non-existent car)
                 db_controller.execute_query(
-                    f"DELETE FROM rental WHERE car_id = ?", (car_id,)
+                    f"DELETE FROM rental WHERE car_id = ?", (car_id)
                 )
                 return
 

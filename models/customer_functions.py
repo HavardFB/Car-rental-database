@@ -24,11 +24,21 @@ def add_customer(db_controller):
     if birth_year is None:
         return
 
+    # Checks if customer already exists
+    customer = db_controller.execute_single_read_query(
+        f"SELECT first_name, last_name, phone_number FROM customer "
+        f"WHERE first_name = ? AND last_name = ? AND phone_number = ?",
+        (first_name, last_name, phone)
+    )
+    if customer:
+        print("Customer already exists")
+        return
+
     # Inserting the data into the customer table
     db_controller.execute_query(
         f"INSERT INTO customer (first_name, last_name, email, phone_number, birth_year) "
         f"VALUES (?, ?, ?, ?, ?)",
-        (first_name, last_name, email, phone, birth_year),
+        (first_name, last_name, email, phone, birth_year)
     )
 
 
@@ -45,7 +55,7 @@ def edit_customer(db_controller):
         # First check if customer exists
         customer = db_controller.execute_single_read_query(
             f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
-            (customer_id,),
+            (customer_id)
         )
 
         if customer is None:
@@ -72,12 +82,12 @@ def edit_customer(db_controller):
             db_controller.execute_query(
                 f"UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone_number = ?, "
                 f"birth_year = ? WHERE customer_id = ?",
-                (first_name, last_name, email, phone, birth_year, customer_id),
+                (first_name, last_name, email, phone, birth_year, customer_id)
             )
             # Updates the rental table with the new last name and phone number
             db_controller.execute_query(
                 f"UPDATE rental SET customer_last_name = ?, customer_phone_number = ? WHERE customer_id = ?",
-                (last_name, phone, customer_id),
+                (last_name, phone, customer_id)
             )
             return
 
@@ -96,28 +106,28 @@ def remove_customer(db_controller):
             # First checks if customer exists
             customer = db_controller.execute_single_read_query(
                 f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
-                (customer_id,),
+                (customer_id)
             )
             if customer is None:
                 print("There is no customer with that ID")
                 return
             # Checks if there are no rentals for this customer, returns if there are rentals
             elif db_controller.execute_single_read_query(
-                f"SELECT customer_id FROM rental WHERE customer_id = ?", (customer_id,)
+                f"SELECT customer_id FROM rental WHERE customer_id = ?", (customer_id)
             ):
                 print("This customer has rentals that need to be returned first!")
                 return
             else:
                 # Deletes customer from the customer table
                 db_controller.execute_query(
-                    f"DELETE FROM customer WHERE customer_id = ?", (customer_id,)
+                    f"DELETE FROM customer WHERE customer_id = ?", (customer_id)
                 )
                 # The next command deletes the rental history for this customer, the idea is that when cars are
                 # returned the customers will not be removed by default. This is to keep the rental history in the
                 # database. If the customer asks to be removed then the rental history also needs to be removed to
                 # delete everything identifying this customer to comply with the law.
                 db_controller.execute_query(
-                    f"DELETE FROM rental WHERE customer_id = ?", (customer_id,)
+                    f"DELETE FROM rental WHERE customer_id = ?", (customer_id)
                 )
                 print(
                     f"Customer {customer[0]} {customer[1]} has been removed"
