@@ -33,7 +33,9 @@ def add_car(db_controller):
 # Normally cars shouldn't be edited, but this function allows for editing all the fields of the car in case it gets
 # a new paint job, a new plate or something was wrong with the initial input when adding the car.
 def edit_car(db_controller):
-    list_cars(db_controller)
+    if list_cars(db_controller) == -10:
+        return
+
     while True:
         car_id = integer_input(
             "Enter the ID of the car you want to edit (leave blank to cancel): "
@@ -93,7 +95,9 @@ def edit_car(db_controller):
 
 
 def remove_car(db_controller):
-    list_cars(db_controller)
+    if list_cars(db_controller) == -10:
+        return
+
     while True:
         car_id = integer_input(
             "Enter the ID of the car you want to remove (leave blank to cancel): "
@@ -137,12 +141,18 @@ def remove_car(db_controller):
 
 def list_cars(db_controller):
     cars = db_controller.execute_read_query(
-        f"SELECT car_id, make, model, plate FROM car", ()
+        f"SELECT car_id, make, model, plate, year, color, mileage FROM car", ()
     )
-    print("Owned cars:")
-    print("ID\t| Make | Model | Plate")
-    for car in cars:
-        print(f"{car[0]}\t{car[1]} {car[2]} {car[3]}")
+    if cars:
+        print("Owned cars:")
+        print("---------------------------------------------------")
+        print("ID\t| Make | Model | Plate | Year | Color | Mileage")
+        for car in cars:
+            print(f"{car[0]}\t{car[1]} {car[2]} {car[3]} {car[4]} {car[5]} {car[6]}")
+        print("---------------------------------------------------")
+    else:
+        print("There is no cars in the database.")
+        return -10
 
 
 def list_available_cars(db_controller):
@@ -151,9 +161,11 @@ def list_available_cars(db_controller):
     )
     if cars:
         print("Available cars: ")
+        print("---------------------------------------------------")
         print("ID\t| Make | Model | Plate")
         for car in cars:
             print(f"{car[0]}\t{car[1]} {car[2]} {car[3]}")
+        print("---------------------------------------------------")
     else:
         print("There are no available cars.")
         return -10
@@ -174,6 +186,7 @@ def search_car(db_controller, search_query):
         return
     else:
         print("Match found:")
+        print("---------------------------------------------------")
         print("ID | Make Model | Plate | Year | Color | Mileage | Available")
         available = ""
         for car in cars:
@@ -184,4 +197,5 @@ def search_car(db_controller, search_query):
             print(
                 f"{car[0]}: {car[1]} {car[2]} | {car[3]} | {car[4]} | {car[5]} | {car[6]} | {available}"
             )
+        print("---------------------------------------------------")
         return

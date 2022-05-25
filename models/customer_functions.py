@@ -32,7 +32,9 @@ def add_customer(db_controller):
 
 
 def edit_customer(db_controller):
-    list_customers(db_controller)
+    if list_customers(db_controller) == -10:
+        return
+
     while True:
         customer_id = integer_input("Enter customer ID (leave blank to cancel): ")
         if customer_id is None:
@@ -77,7 +79,9 @@ def edit_customer(db_controller):
 
 
 def remove_customer(db_controller):
-    list_customers(db_controller)
+    if list_customers(db_controller) == -10:
+        return
+
     while True:
         customer_id = integer_input("Enter customer ID (leave blank to cancel): ")
         if customer_id is None:
@@ -121,9 +125,11 @@ def list_customers(db_controller):
     )
     if customers:
         print("Current customers:")
+        print("---------------------------------------------------")
         print("ID | Name")
         for customer in customers:
             print(f"{customer[0]}: {customer[1]} {customer[2]}")
+        print("---------------------------------------------------")
     else:
         print("There are no customers")
         return -10
@@ -144,9 +150,11 @@ def search_customer(db_controller, search_query):
         return
     else:
         print("Match found: ")
+        print("---------------------------------------------------")
         print("ID | Name | E-mail | Phone number | Birth year")
         for customer in customers:
             print(
                 f"{customer[0]}: {customer[1]} {customer[2]} | {customer[3]} | {customer[4]} | {customer[5]}"
             )
+        print("---------------------------------------------------")
         return
