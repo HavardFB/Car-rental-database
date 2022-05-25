@@ -288,27 +288,11 @@ def export_menu(db_controller):
                         if user_choice == 4:
                             exit_submenu = True
                         elif user_choice == 1:  # CUSTOMER EXPORT
-                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            # Returns -11 if file already exists, the user will have to try again
-                            if (csv_export_customers(db_controller, file_name)) == -11:
-                                continue
-                            else:
-                                print("The file has been exported to the exports folder.")
-                                return
+                            csv_export_customers(db_controller)
                         elif user_choice == 2:  # CAR EXPORT
-                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            if (csv_export_cars(db_controller, file_name)) == -11:
-                                continue
-                            else:
-                                print("The file has been exported to the exports folder.")
-                                return
+                            csv_export_cars(db_controller)
                         elif user_choice == 3:  # RENTAL HISTORY EXPORT
-                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            if (csv_export_rental_history(db_controller, file_name)) == -11:
-                                continue
-                            else:
-                                print("The file has been exported to the exports folder.")
-                                return
+                            csv_export_rental_history(db_controller)
                     else:
                         print("Your number is not in the menu range.")
 
@@ -339,29 +323,12 @@ def export_menu(db_controller):
                         if user_choice == 4:
                             exit_submenu = True
                         elif user_choice == 1:  # CUSTOMER EXPORT
-                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            # Returns -11 if file already exists, the user will have to try again
-                            if (json_export_customers(db_controller, file_name)) == -11:
-                                continue
-                            else:
-                                print("The file has been exported to the exports folder.")
-                                return
+                            json_export_customers(db_controller)
                         elif user_choice == 2:  # CAR EXPORT
-                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            if (json_export_cars(db_controller, file_name)) == -11:
-                                continue
-                            else:
-                                print("The file has been exported to the exports folder.")
-                                return
+                            json_export_cars(db_controller)
                         elif user_choice == 3:  # RENTAL HISTORY EXPORT
-                            file_name = string_input("Please enter the filename without extensions (or press enter to use default name): ")
-                            if (json_export_rental_history(db_controller, file_name)) == -11:
-                                continue
-                            else:
-                                print("The file has been exported to the exports folder.")
-                                return
+                            json_export_rental_history(db_controller)
                     else:
                         print("Your number is not in the menu range.")
-
         else:
             print("Your number is not in the menu range.")
