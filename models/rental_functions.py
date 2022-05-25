@@ -20,7 +20,7 @@ def add_rental(db_controller):
             # First check if customer exists
             customer = db_controller.execute_single_read_query(
                 f"SELECT first_name, last_name, phone_number FROM customer WHERE customer_id = ?",
-                (customer_id)
+                (customer_id,)
             )
             if customer is None:
                 print("There is no customer with that ID")
@@ -42,7 +42,7 @@ def add_rental(db_controller):
                         # Retrieves car from database
                         car = db_controller.execute_single_read_query(
                             f"SELECT make, model, plate, available FROM car WHERE car_id = ?",
-                            (car_id)
+                            (car_id,)
                         )
                         # Check if car exists
                         if car is None:
@@ -69,7 +69,7 @@ def add_rental(db_controller):
                             )
                             # Updates availability car table
                             db_controller.execute_query(
-                                f"UPDATE car SET available = 0 WHERE car_id = ?", (car_id)
+                                f"UPDATE car SET available = 0 WHERE car_id = ?", (car_id,)
                             )
                             print(
                                 f"{car[0]} {car[1]} {car[2]} has been rented by {customer[0]} {customer[1]}."
@@ -94,7 +94,7 @@ def return_rental(db_controller):
                 # Gets customer from database
                 customer = db_controller.execute_single_read_query(
                     f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
-                    (customer_id)
+                    (customer_id,)
                 )
                 # Checks if customer exists
                 if customer is None:
@@ -105,7 +105,7 @@ def return_rental(db_controller):
                     cars = db_controller.execute_read_query(
                         f"SELECT make, model, plate FROM car WHERE car_id IN "
                         f"(SELECT car_id FROM rental WHERE customer_id = ?) AND available = 0",
-                        (customer_id)
+                        (customer_id,)
                     )
                     if len(cars) == 0:
                         print("There is no car associated with that customer.")
@@ -136,7 +136,7 @@ def return_rental(db_controller):
                             else:
                                 # Selects the car that has the same plate number as the user input
                                 car = db_controller.execute_single_read_query(
-                                    f"SELECT car_id, mileage FROM car WHERE plate = ?", (plate_num)
+                                    f"SELECT car_id, mileage FROM car WHERE plate = ?", (plate_num,)
                                 )
                                 if car is None:
                                     print(

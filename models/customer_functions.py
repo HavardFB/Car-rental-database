@@ -53,7 +53,7 @@ def edit_customer(db_controller):
         # First check if customer exists
         customer = db_controller.execute_single_read_query(
             f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
-            (customer_id)
+            (customer_id,)
         )
 
         if customer is None:
@@ -104,28 +104,28 @@ def remove_customer(db_controller):
             # First checks if customer exists
             customer = db_controller.execute_single_read_query(
                 f"SELECT first_name, last_name FROM customer WHERE customer_id = ?",
-                (customer_id)
+                (customer_id,)
             )
             if customer is None:
                 print("There is no customer with that ID")
                 return
             # Checks if there are no rentals for this customer, returns if there are rentals
             elif db_controller.execute_single_read_query(
-                f"SELECT customer_id FROM rental WHERE customer_id = ?", (customer_id)
+                f"SELECT customer_id FROM rental WHERE customer_id = ?", (customer_id,)
             ):
                 print("This customer has rentals that need to be returned first!")
                 return
             else:
                 # Deletes customer from the customer table
                 db_controller.execute_query(
-                    f"DELETE FROM customer WHERE customer_id = ?", (customer_id)
+                    f"DELETE FROM customer WHERE customer_id = ?", (customer_id,)
                 )
                 # The next command deletes the rental history for this customer, the idea is that when cars are
                 # returned the customers will not be removed by default. This is to keep the rental history in the
                 # database. If the customer asks to be removed then the rental history also needs to be removed to
                 # delete everything identifying this customer to comply with the law.
                 db_controller.execute_query(
-                    f"DELETE FROM rental WHERE customer_id = ?", (customer_id)
+                    f"DELETE FROM rental WHERE customer_id = ?", (customer_id,)
                 )
                 print(
                     f"Customer {customer[0]} {customer[1]} has been removed"
