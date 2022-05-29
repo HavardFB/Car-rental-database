@@ -1,0 +1,16 @@
+[
+    {
+        "rental_date": "2022-05-26",
+        "return_date": "2022-05-26",
+        "customer_last_name": "Nordmann",
+        "customer_phone_number": "+47 817 82 282",
+        "car_plate": "KN 38788"
+    },
+    {
+        "rental_date": "2022-05-26",
+        "return_date": "2022-05-26",
+        "customer_last_name": "Karlsen",
+        "customer_phone_number": "+47 828 81 727",
+        "car_plate": "SK 39891"
+    }
+]

@@ -1,0 +1,58 @@
+[
+    {
+        "make": "Nissan",
+        "model": "Leaf",
+        "plate": "EL 82781",
+        "year": 2014,
+        "color": "silver",
+        "mileage": 175624
+    },
+    {
+        "make": "Audi",
+        "model": "e-tron",
+        "plate": "EK 92891",
+        "year": 2019,
+        "color": "blue",
+        "mileage": 86256
+    },
+    {
+        "make": "Ford",
+        "model": "Mondeo",
+        "plate": "HN 82718",
+        "year": 2004,
+        "color": "blue",
+        "mileage": 203948
+    },
+    {
+        "make": "Volkswagen",
+        "model": "Tiguan",
+        "plate": "SD 82761",
+        "year": 2012,
+        "color": "beige",
+        "mileage": 200000
+    },
+    {
+        "make": "Volvo",
+        "model": "XC50",
+        "plate": "KN 38788",
+        "year": 2007,
+        "color": "silver",
+        "mileage": 187898
+    },
+    {
+        "make": "BMW",
+        "model": "3-serie",
+        "plate": "SK 39891",
+        "year": 2015,
+        "color": "silver",
+        "mileage": 176382
+    },
+    {
+        "make": "Skoda",
+        "model": "Superb",
+        "plate": "LK 39899",
+        "year": 2012,
+        "color": "silver",
+        "mileage": 167252
+    }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "first_name": "Ola",
+        "last_name": "Nordmann",
+        "email": "ola@nordmann.no",
+        "phone_number": "+47 817 82 282",
+        "birth_year": 1968
+    },
+    {
+        "first_name": "Knut",
+        "last_name": "Knutsen",
+        "email": "knut@knutsen.no",
+        "phone_number": "+47 922 92 192",
+        "birth_year": 1997
+    },
+    {
+        "first_name": "Helga",
+        "last_name": "Helgesen",
+        "email": "helga@helgesen.no",
+        "phone_number": "+47 271 29 828",
+        "birth_year": 2000
+    },
+    {
+        "first_name": "Ole",
+        "last_name": "Brumm",
+        "email": "ole@brumm.no",
+        "phone_number": "+47 822 17 626",
+        "birth_year": 1950
+    },
+    {
+        "first_name": "Klaus",
+        "last_name": "Karlsen",
+        "email": "klaus@karlsen.no",
+        "phone_number": "+47 828 81 727",
+        "birth_year": 1987
+    },
+    {
+        "first_name": "Lisa",
+        "last_name": "Larsen",
+        "email": "lisa@larsen.no",
+        "phone_number": "+47 411 38 727",
+        "birth_year": 1998
+    }
+]
